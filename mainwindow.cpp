@@ -52,10 +52,11 @@ void MainWindow::actualizar(QList<QCheckBox*> checkboxes){
             checkboxes[i]->show();
             aux = aux->getSgt();
         }
+        ui->cantTask->setText(QString::number(Task::getCant()));
     }else{
+        ui->cantTask->setText(QString::number(Task::getCant()));
         QMessageBox::information(this, "Sin Tareas Pendientes", "Por el momento usted no tiene tareas pendientes. Felicidades!");
     }
-    ui->cantTask->setText(QString::number(Task::getCant()));
 }
 
 void MainWindow::actuTask(QList<QCheckBox*> checkboxes){
