@@ -1,0 +1,27 @@
+# Archivos generados por Qt y QMake
+build/          # Ignora toda la carpeta de compilación
+*.pro.user      # Configuraciones específicas del usuario (IDE)
+*.qmake.stash   # Archivo generado por QMake
+
+# Archivos generados por el compilador/MOC
+*.o             # Objetos compilados
+moc_*           # Archivos generados por el Meta-Object Compiler (MOC)
+ui_*            # Archivos de interfaz generados
+*.moc
+*.qrc
+
+# Ejecutables y librerías
+To_Do_List      # Binario generado (Linux/Mac)
+*.exe           # Binario generado (Windows)
+*.dll           # Librerías dinámicas
+*.so            # Librerías compartidas (Linux)
+
+# Archivos temporales y de IDE
+*.autosave
+*.swp
+*.swo
+*.DS_Store      # Archivo de metadatos de macOS
+
+# Archivos específicos de tu listado que deben ignorarse
+# (ya cubiertos por los patrones anteriores, pero puedes ser explícito)
+build/GCC_Kit-Debug/
