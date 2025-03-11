@@ -19,6 +19,10 @@ public:
 
     Task(std::string tarea, bool esPendiente);
 
+    void trim (std::string &s){
+        s.erase(s.find_last_not_of(" \t\n\r") + 1);
+    }
+
     void setTarea (std::string tarea){
         this->tarea = tarea;
     }

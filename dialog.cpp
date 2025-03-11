@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <stdlib.h>
+#include <QMessageBox>
 
 const char lim = '_';
 const std::string nombreArchivo = "../tareas.txt";
@@ -39,15 +40,17 @@ void Dialog::on_buttonBox_rejected()
 
 void Dialog::guardarDatos (Task *task){
     std::ofstream archivo;
-    archivo.open( nombreArchivo.c_str(), std::ios_base::app | std::ios_base::out );
+    try{
+        archivo.open( nombreArchivo.c_str(), std::ios_base::app | std::ios_base::out );
+        if (!archivo.is_open()) {
+            throw std::runtime_error("No se pudo abrir el archivo");
+        }
+        archivo << task->getTarea() << lim << task->getEsPendiente() << std::endl;
+        archivo.close();
 
-    if (!archivo.is_open()) {
-        qDebug() << "Error: No se pudo abrir el archivo" << nombreArchivo.c_str();
-        return;
+    }catch(const std::runtime_error& e){
+        QMessageBox::critical(this, "Error", e.what());
     }
-
-    archivo << task->getTarea() << lim << task->getEsPendiente() << std::endl;
-    archivo.close();
 }
 
 void Dialog::recibirLista(ListaSimple<Task> *listaTarea){

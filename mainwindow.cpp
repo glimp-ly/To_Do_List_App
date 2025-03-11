@@ -5,6 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include <stdlib.h>
+#include <QFile>
 
 const char lim = '_';
 const std::string nombreArchivo = "../tareas.txt";
@@ -71,7 +72,18 @@ void MainWindow::recuperarDatos ( ListaSimple<Task> *lT ){
     std::string linea;
     std::string tarea, estado;
     bool esPendiente;
-    std::ifstream archivo( nombreArchivo.c_str(), std::ios_base::in );
+
+    QFile file(nombreArchivo.c_str());
+    if (!file.exists()) {
+        std::ofstream archivoCrear(nombreArchivo.c_str(), std::ios::out);
+        archivoCrear.close();
+    }
+
+    std::ifstream archivo(nombreArchivo.c_str(), std::ios_base::in);
+    if (!archivo.is_open()) {
+        return;
+    }
+
     while ( std::getline(archivo, linea)){
         std::stringstream entrada (linea);
         std::getline (entrada, tarea, lim);
@@ -102,6 +114,7 @@ void MainWindow::actuTask(QList<QCheckBox*> checkboxes){
             if(cb->isChecked()){
                 std::string tareaEli = cb->text().toStdString();
                 eliminado = listaTareas->eliminar(comparar, &tareaEli);
+                eliminarElementoTxt(tareaEli);
                 cb->setText("");
                 cb->setChecked(false);
                 Task::setCant(1);
@@ -120,6 +133,35 @@ void MainWindow::on_pushButton_clicked()
     actuTask(checkboxes);
 }
 
-void MainWindow::eliminarElementoTxt (bool esPendiente){
+void MainWindow::eliminarElementoTxt (const std::string tareaElim){
+    std::string linea, tareaEn;
+    std::ifstream archivo( nombreArchivo.c_str(), std::ios_base::in );
+    std::ofstream archivoTemp;
+    archivoTemp.open("temp.txt", std::ios_base::out | std::ios_base::trunc);
 
+    try{
+        if(!archivo.is_open() || !archivoTemp.is_open()){
+            throw std::runtime_error("Los Archivos no se pudieron abrir");
+        }
+
+        while(std::getline(archivo, linea)){
+            std::stringstream buf(linea);
+            std::getline(buf, tareaEn, lim);
+
+            if(!(tareaEn == tareaElim)){
+                archivoTemp << linea << std::endl;
+            }
+        }
+        archivo.close();
+        archivoTemp.close();
+
+        if (remove(nombreArchivo.c_str())) {
+            throw std::runtime_error("Error al eliminar el archivo original");
+        }
+        if (rename("temp.txt", nombreArchivo.c_str())) {
+            throw std::runtime_error("Error al renombrar el archivo temporal");
+        }
+    }catch(std::runtime_error &e){
+        QMessageBox::critical(this, "Error", e.what());
+    }
 }

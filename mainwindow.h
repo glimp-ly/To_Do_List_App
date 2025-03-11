@@ -24,7 +24,7 @@ public:
     void actualizar(QList<QCheckBox*> checkboxes);
     void actuTask(QList<QCheckBox*> checkboxes);
     void recuperarDatos (ListaSimple<Task> *lT);
-    void eliminarElementoTxt (bool esPendiente);
+    void eliminarElementoTxt (const std::string tareaElim);
 
     static bool comparar(Task* tarea, void* nombre, void*) {
         return tarea->getTarea() == *(std::string*)nombre;
