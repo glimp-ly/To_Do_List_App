@@ -9,6 +9,7 @@ moc_*           # Archivos generados por el Meta-Object Compiler (MOC)
 ui_*            # Archivos de interfaz generados
 *.moc
 *.qrc
+task.txt
 
 # Ejecutables y librerías
 To_Do_List      # Binario generado (Linux/Mac)
