@@ -7,3 +7,9 @@ Task::Task (std::string tarea){
     esPendiente = true;
     cant++;
 }
+
+Task::Task (std::string tarea, bool esPendiente){
+    this->tarea = tarea;
+    this->esPendiente = esPendiente;
+    cant++;
+}

@@ -18,6 +18,8 @@ public:
     std::string tarea;
     ~Dialog();
 
+    void guardarDatos(Task *task);
+
     void recibirLista(ListaSimple<Task> *listaTarea);
 
 private slots:

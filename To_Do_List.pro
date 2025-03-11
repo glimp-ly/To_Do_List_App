@@ -12,13 +12,15 @@ SOURCES += \
     Task.cpp \
     dialog.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    completedtask.cpp
 
 HEADERS += \
     Task.h \
     dialog.h \
     listaSimpleBase.h \
-    mainwindow.h
+    mainwindow.h \
+    completedtask.h
 
 FORMS += \
     dialog.ui \

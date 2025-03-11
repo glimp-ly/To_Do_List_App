@@ -2,6 +2,12 @@
 #include "ui_mainwindow.h"
 #include "Task.h"
 #include "QMessageBox"
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+
+const char lim = '_';
+const std::string nombreArchivo = "../tareas.txt";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -9,9 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
     listaTareas(new ListaSimple<Task>)
 {
     ui->setupUi(this);
+    recuperarDatos(listaTareas);
     checkboxes = this->findChildren<QCheckBox*>();
+    actualizar(checkboxes);
     ui->cantTask->setText(QString::number(Task::getCant()));
-    ocultarCheckbox(checkboxes, 2);
+    ocultarCheckbox(checkboxes, 1);
 }
 
 MainWindow::~MainWindow()
@@ -59,6 +67,34 @@ void MainWindow::actualizar(QList<QCheckBox*> checkboxes){
     }
 }
 
+void MainWindow::recuperarDatos ( ListaSimple<Task> *lT ){
+    std::string linea;
+    std::string tarea, estado;
+    bool esPendiente;
+    std::ifstream archivo( nombreArchivo.c_str(), std::ios_base::in );
+    while ( std::getline(archivo, linea)){
+        std::stringstream entrada (linea);
+        std::getline (entrada, tarea, lim);
+        std::getline (entrada, estado, lim);
+
+        /* Para convertir distintos tipos de datos a string
+        pro->precioCompra = strtof(precioC.c_str(), NULL);
+        pro->precioVenta = strtof(precioV.c_str(), NULL);
+        pro->stock = atoi(stock.c_str());
+        */
+
+        if (estado == "1")
+            esPendiente = true;
+        else
+            esPendiente = false;
+
+
+        Task *task = new Task(tarea, esPendiente);
+        lT->insertarElemento(task);
+    }
+    archivo.close();
+}
+
 void MainWindow::actuTask(QList<QCheckBox*> checkboxes){
     bool eliminado = false;
     for(QCheckBox *cb : checkboxes){
@@ -84,3 +120,6 @@ void MainWindow::on_pushButton_clicked()
     actuTask(checkboxes);
 }
 
+void MainWindow::eliminarElementoTxt (bool esPendiente){
+
+}

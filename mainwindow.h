@@ -23,7 +23,8 @@ public:
     void ocultarCheckbox(QList<QCheckBox*> checkboxes, int condi);
     void actualizar(QList<QCheckBox*> checkboxes);
     void actuTask(QList<QCheckBox*> checkboxes);
-    void inicializarLista();
+    void recuperarDatos (ListaSimple<Task> *lT);
+    void eliminarElementoTxt (bool esPendiente);
 
     static bool comparar(Task* tarea, void* nombre, void*) {
         return tarea->getTarea() == *(std::string*)nombre;

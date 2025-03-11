@@ -15,6 +15,10 @@ public:
 
     Task(std::string tarea);
 
+    Task();
+
+    Task(std::string tarea, bool esPendiente);
+
     void setTarea (std::string tarea){
         this->tarea = tarea;
     }

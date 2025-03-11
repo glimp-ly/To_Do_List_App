@@ -4,6 +4,8 @@
 
 ## Características  
 - [x] Agregar tareas  
+- [x] Pessistencia de Datos asi cierres la app
+- [ ] Eliminar tareas cuando reinicie la app (Pendiente)
 - [ ] Editar tareas (próximamente)  
 ##
 ## Tecnologías  
