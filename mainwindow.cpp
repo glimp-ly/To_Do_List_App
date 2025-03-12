@@ -9,6 +9,7 @@
 
 const char lim = '_';
 const std::string nombreArchivo = "../tareas.txt";
+bool band = false;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -63,6 +64,10 @@ void MainWindow::actualizar(QList<QCheckBox*> checkboxes){
         }
         ui->cantTask->setText(QString::number(Task::getCant()));
     }else{
+        if(!band){
+            band = true;
+            return;
+        }
         ui->cantTask->setText(QString::number(Task::getCant()));
         QMessageBox::information(this, "Sin Tareas Pendientes", "Por el momento usted no tiene tareas pendientes. Felicidades!");
     }
@@ -73,38 +78,35 @@ void MainWindow::recuperarDatos ( ListaSimple<Task> *lT ){
     std::string tarea, estado;
     bool esPendiente;
 
-    QFile file(nombreArchivo.c_str());
-    if (!file.exists()) {
-        std::ofstream archivoCrear(nombreArchivo.c_str(), std::ios::out);
-        archivoCrear.close();
+    try{
+        std::ifstream archivo(nombreArchivo.c_str(), std::ios_base::in);
+        if (!archivo.is_open()) {
+            throw std::runtime_error("El archivo para recuperar datos no se puede abrir.");
+        }
+
+        while ( std::getline(archivo, linea)){
+            std::stringstream entrada (linea);
+            std::getline (entrada, tarea, lim);
+            std::getline (entrada, estado, lim);
+
+            /* Para convertir distintos tipos de datos a string
+            pro->precioCompra = strtof(precioC.c_str(), NULL);
+            pro->precioVenta = strtof(precioV.c_str(), NULL);
+            pro->stock = atoi(stock.c_str());
+            */
+
+            if (estado == "1")
+                esPendiente = true;
+            else
+                esPendiente = false;
+
+            Task *task = new Task(tarea, esPendiente);
+            lT->insertarElemento(task);
+        }
+        archivo.close();
+    }catch(std::runtime_error &e){
+        QMessageBox::critical(this,"Error al abrir el archivo", e.what());
     }
-
-    std::ifstream archivo(nombreArchivo.c_str(), std::ios_base::in);
-    if (!archivo.is_open()) {
-        return;
-    }
-
-    while ( std::getline(archivo, linea)){
-        std::stringstream entrada (linea);
-        std::getline (entrada, tarea, lim);
-        std::getline (entrada, estado, lim);
-
-        /* Para convertir distintos tipos de datos a string
-        pro->precioCompra = strtof(precioC.c_str(), NULL);
-        pro->precioVenta = strtof(precioV.c_str(), NULL);
-        pro->stock = atoi(stock.c_str());
-        */
-
-        if (estado == "1")
-            esPendiente = true;
-        else
-            esPendiente = false;
-
-
-        Task *task = new Task(tarea, esPendiente);
-        lT->insertarElemento(task);
-    }
-    archivo.close();
 }
 
 void MainWindow::actuTask(QList<QCheckBox*> checkboxes){
