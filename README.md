@@ -12,6 +12,10 @@
 - Qt 6  
 - C++  
 ##
+## Si ejecutas este proyecto en Windows
+- Cambia las primeras lineas de mainwindow.cpp y dialog.cpp.
+- Coloca "..\\\tareas.txt" en lugar de "../tareas.txt"
+##
 ## Contribuir  
 1. Haz un fork del repositorio.  
 2. Crea una rama: `git checkout -b nueva-funcionalidad`.  
