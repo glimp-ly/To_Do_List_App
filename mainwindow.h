@@ -30,7 +30,7 @@ public:
         return tarea->getTarea() == *(std::string*)nombre;
     }
 
-    bool band = false;
+    bool band = true;
 
 private slots:
     void on_pushButton_2_clicked();

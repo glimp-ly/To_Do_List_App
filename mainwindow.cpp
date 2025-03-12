@@ -63,11 +63,13 @@ void MainWindow::actualizar(QList<QCheckBox*> checkboxes){
         }
         ui->cantTask->setText(QString::number(Task::getCant()));
     }else{
-        if(!band){
+        if(band){
+            band = false;
             return;
         }
         QMessageBox::information(this, "Sin Tareas Pendientes", "Por el momento usted no tiene tareas pendientes. Felicidades!");
     }
+    band = false;
 }
 
 void MainWindow::recuperarDatos ( ListaSimple<Task> *lT ){
