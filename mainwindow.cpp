@@ -9,7 +9,6 @@
 
 const char lim = '_';
 const std::string nombreArchivo = "../tareas.txt";
-bool band = false;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

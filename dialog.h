@@ -19,7 +19,7 @@ public:
     ~Dialog();
 
     void guardarDatos(Task *task);
-
+    bool contiene (std::string cadena, std::string subCadena);
     void recibirLista(ListaSimple<Task> *listaTarea);
 
 private slots:

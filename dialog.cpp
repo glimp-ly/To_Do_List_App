@@ -22,18 +22,25 @@ Dialog::~Dialog()
 
 void Dialog::on_buttonBox_accepted()
 {
-    if(ui->tareaIngreso->toPlainText().isEmpty() == false){
-        tarea = ui->tareaIngreso->toPlainText().toStdString();
-        Task *task = new Task(tarea);
-        listaTarea->insertarElemento(task);
-        guardarDatos(task);
-    }
-    else{
-        close();
+    try{
+        if(ui->tareaIngreso->toPlainText().isEmpty() == false){
+            tarea = ui->tareaIngreso->toPlainText().toStdString();
+            if(contiene(tarea, "_")){
+                throw std::runtime_error("El caracter '_' no es valido.");
+            }
+            Task *task = new Task(tarea);
+            listaTarea->insertarElemento(task);
+            guardarDatos(task);
+        }
+        else{
+            close();
+        }
+    }catch(std::exception &e){
+        QMessageBox::critical(this, "Caracter Invalido", e.what());
     }
 }
 
-void Dialog::on_buttonBox_rejected()
+void Dialog::   on_buttonBox_rejected()
 {
     close();
 }
@@ -51,6 +58,10 @@ void Dialog::guardarDatos (Task *task){
     }catch(const std::runtime_error& e){
         QMessageBox::critical(this, "Error", e.what());
     }
+}
+
+bool Dialog::contiene(std::string cadena, std::string subCadena) {
+    return cadena.find(subCadena) != std::string::npos;
 }
 
 void Dialog::recibirLista(ListaSimple<Task> *listaTarea){
