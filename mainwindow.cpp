@@ -64,10 +64,8 @@ void MainWindow::actualizar(QList<QCheckBox*> checkboxes){
         ui->cantTask->setText(QString::number(Task::getCant()));
     }else{
         if(!band){
-            band = true;
             return;
         }
-        ui->cantTask->setText(QString::number(Task::getCant()));
         QMessageBox::information(this, "Sin Tareas Pendientes", "Por el momento usted no tiene tareas pendientes. Felicidades!");
     }
 }
@@ -123,6 +121,7 @@ void MainWindow::actuTask(QList<QCheckBox*> checkboxes){
         }
     }
     if(eliminado){
+        ui->cantTask->setText(QString::number(Task::getCant()));
         QMessageBox::information(this, "Tarea(s) Eliminada(s)", "La lista de tareas ha sido actualizada correctamente");
     }
     ocultarCheckbox(checkboxes, 2);
