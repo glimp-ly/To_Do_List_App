@@ -161,6 +161,7 @@ void MainWindow::eliminarElementoTxt (const std::string tareaElim){
             throw std::runtime_error("Error al eliminar el archivo original");
         }
         if (rename("temp.txt", nombreArchivo.c_str())) {
+            remove("temp.txt");
             throw std::runtime_error("Error al renombrar el archivo temporal");
         }
     }catch(std::runtime_error &e){
