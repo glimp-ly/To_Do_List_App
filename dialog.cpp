@@ -40,7 +40,7 @@ void Dialog::on_buttonBox_accepted()
     }
 }
 
-void Dialog::   on_buttonBox_rejected()
+void Dialog::on_buttonBox_rejected()
 {
     close();
 }

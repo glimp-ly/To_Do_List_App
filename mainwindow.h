@@ -6,6 +6,7 @@
 #include "listaSimpleBase.h"
 #include "Task.h"
 #include "ui_mainwindow.h"
+#include "QCheckBox"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,7 +22,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void ocultarCheckbox(QList<QCheckBox*> checkboxes, int condi);
-    void actualizar(QList<QCheckBox*> checkboxes);
+    void actualizar();
     void actuTask(QList<QCheckBox*> checkboxes);
     void recuperarDatos (ListaSimple<Task> *lT);
     void eliminarElementoTxt (const std::string tareaElim);

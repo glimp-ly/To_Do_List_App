@@ -17,8 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     recuperarDatos(listaTareas);
-    checkboxes = this->findChildren<QCheckBox*>();
-    actualizar(checkboxes);
+    actualizar();
     ui->cantTask->setText(QString::number(Task::getCant()));
     ocultarCheckbox(checkboxes, 1);
 }
@@ -33,7 +32,9 @@ void MainWindow::on_pushButton_2_clicked()
     Dialog uiDialog(this);
     uiDialog.recibirLista(listaTareas);
     uiDialog.exec();
-    actualizar(checkboxes);
+    if(!Task::getCant() == 0){
+        actualizar();
+    }
 }
 
 void MainWindow::ocultarCheckbox(QList<QCheckBox *> checkboxes, int condi) {
@@ -53,12 +54,16 @@ void MainWindow::ocultarCheckbox(QList<QCheckBox *> checkboxes, int condi) {
     }
 }
 
-void MainWindow::actualizar(QList<QCheckBox*> checkboxes){
+void MainWindow::actualizar(){
     if(!(listaTareas->getCab() == nullptr)){
-        Nodo<Task> *aux = listaTareas->getCab();
+        Nodo<Task> *aux = listaTareas->getCab();        
+
         for (int i = 0; i <= Task::getCant() - 1; i++) {
-            checkboxes[i]->setText(QString::fromStdString(aux->getInfo()->getTarea()));
-            checkboxes[i]->show();
+            QCheckBox *checkbox = new QCheckBox;
+            checkboxes.append(checkbox);
+            ui->verticalLayout_2->addWidget(checkbox, 1);;
+            checkbox->setText(QString::fromStdString(aux->getInfo()->getTarea()));
+            checkbox->show();
             aux = aux->getSgt();
         }
         ui->cantTask->setText(QString::number(Task::getCant()));
@@ -84,23 +89,25 @@ void MainWindow::recuperarDatos ( ListaSimple<Task> *lT ){
         }
 
         while ( std::getline(archivo, linea)){
-            std::stringstream entrada (linea);
-            std::getline (entrada, tarea, lim);
-            std::getline (entrada, estado, lim);
+            if(!(linea == "")){
+                std::stringstream entrada (linea);
+                std::getline (entrada, tarea, lim);
+                std::getline (entrada, estado, lim);
 
-            /* Para convertir distintos tipos de datos a string
+                /* Para convertir distintos tipos de datos a string
             pro->precioCompra = strtof(precioC.c_str(), NULL);
             pro->precioVenta = strtof(precioV.c_str(), NULL);
             pro->stock = atoi(stock.c_str());
             */
 
-            if (estado == "1")
-                esPendiente = true;
-            else
-                esPendiente = false;
+                if (estado == "1")
+                    esPendiente = true;
+                else
+                    esPendiente = false;
 
-            Task *task = new Task(tarea, esPendiente);
-            lT->insertarElemento(task);
+                Task *task = new Task(tarea, esPendiente);
+                lT->insertarElemento(task);
+            }
         }
         archivo.close();
     }catch(std::runtime_error &e){
@@ -127,7 +134,7 @@ void MainWindow::actuTask(QList<QCheckBox*> checkboxes){
         QMessageBox::information(this, "Tarea(s) Eliminada(s)", "La lista de tareas ha sido actualizada correctamente");
     }
     ocultarCheckbox(checkboxes, 2);
-    actualizar(checkboxes);
+    actualizar();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -147,11 +154,13 @@ void MainWindow::eliminarElementoTxt (const std::string tareaElim){
         }
 
         while(std::getline(archivo, linea)){
-            std::stringstream buf(linea);
-            std::getline(buf, tareaEn, lim);
+            if(!(linea == "")){
+                std::stringstream buf(linea);
+                std::getline(buf, tareaEn, lim);
 
-            if(!(tareaEn == tareaElim)){
-                archivoTemp << linea << std::endl;
+                if(!(tareaEn == tareaElim)){
+                    archivoTemp << linea << std::endl;
+                }
             }
         }
         archivo.close();
