@@ -29,6 +29,11 @@ void Dialog::on_buttonBox_accepted()
                 throw std::runtime_error("El caracter '_' no es valido.");
             }
             Task *task = new Task(tarea);
+            std::string tar = task->getTarea();
+            if(listaTarea->existe(comparar, &tar)){
+                delete task;
+                throw std::runtime_error("Ya existe una tarea con esa descripcion.");
+            }
             listaTarea->insertarElemento(task);
             guardarDatos(task);
         }

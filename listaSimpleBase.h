@@ -109,6 +109,24 @@ public:
         return eliminado;
     }
 
+    bool existe(bool (*comparador)(T* elemento, void* param1, void* param2),
+                  void* param1 = nullptr,
+                  void* param2 = nullptr) {
+        if (!cab) return false;
+
+        Nodo<T> *actual = cab;
+
+        while (actual) {
+            if (comparador(actual->getInfo(), param1, param2)) {
+                return true;
+            }
+
+            actual = actual->getSgt();
+        }
+
+        return false;
+    }
+
     template <typename A>
     bool buscar (A condicion);
 

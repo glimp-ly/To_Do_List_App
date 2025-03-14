@@ -22,6 +22,10 @@ public:
     bool contiene (std::string cadena, std::string subCadena);
     void recibirLista(ListaSimple<Task> *listaTarea);
 
+    static bool comparar(Task* tarea, void* nombre, void*) {
+        return tarea->getTarea() == *(std::string*)nombre;
+    }
+
 private slots:
     void on_buttonBox_accepted();
 
