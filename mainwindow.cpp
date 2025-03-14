@@ -55,13 +55,20 @@ void MainWindow::ocultarCheckbox(QList<QCheckBox *> checkboxes, int condi) {
 }
 
 void MainWindow::actualizar(){
+
+    for (QCheckBox* cb : checkboxes) {
+        ui->verticalLayout_2->removeWidget(cb);
+        delete cb;
+    }
+    checkboxes.clear();
+
     if(!(listaTareas->getCab() == nullptr)){
         Nodo<Task> *aux = listaTareas->getCab();        
 
         for (int i = 0; i <= Task::getCant() - 1; i++) {
             QCheckBox *checkbox = new QCheckBox;
             checkboxes.append(checkbox);
-            ui->verticalLayout_2->addWidget(checkbox, 1);;
+            ui->verticalLayout_2->insertWidget(0, checkbox);
             checkbox->setText(QString::fromStdString(aux->getInfo()->getTarea()));
             checkbox->show();
             aux = aux->getSgt();
