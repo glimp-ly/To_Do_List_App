@@ -132,6 +132,7 @@ void MainWindow::actuTask(QList<QCheckBox*> checkboxes){
                 eliminarElementoTxt(tareaEli);
                 cb->setText("");
                 cb->setChecked(false);
+                cb->hide();
                 Task::setCant(1);
             }
         }
