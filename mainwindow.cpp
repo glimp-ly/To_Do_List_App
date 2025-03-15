@@ -67,6 +67,13 @@ void MainWindow::actualizar(){
 
         for (int i = 0; i <= Task::getCant() - 1; i++) {
             QCheckBox *checkbox = new QCheckBox;
+            checkbox->setStyleSheet(
+                "QCheckBox {"
+                "   font-size: 16px;"   // Tamaño de fuente
+                "   color: #fff;"     // Color del texto
+                "   font-family: Arial;" // Tipo de letra
+                "}"
+                );
             checkboxes.append(checkbox);
             ui->verticalLayout_2->insertWidget(0, checkbox);
             checkbox->setText(QString::fromStdString(aux->getInfo()->getTarea()));
