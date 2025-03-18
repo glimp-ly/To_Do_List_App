@@ -22,6 +22,16 @@ MainWindow::MainWindow(QWidget *parent)
     ocultarCheckbox(checkboxes, 1);
     ui->pushButton_2->setShortcut(QKeySequence("Ctrl+A"));
     ui->pushButton->setShortcut(QKeySequence("Ctrl+U"));
+    ui->pushButton_2->setStyleSheet(
+        "QPushButton:hover{"
+        "   background-color: green;"
+        "}"
+        );
+    ui->pushButton->setStyleSheet(
+        "QPushButton:hover{"
+        "   background-color: red;"
+        "}"
+        );
 }
 
 MainWindow::~MainWindow()
