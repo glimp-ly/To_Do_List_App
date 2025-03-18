@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     actualizar();
     ui->cantTask->setText(QString::number(Task::getCant()));
     ocultarCheckbox(checkboxes, 1);
+    ui->pushButton_2->setShortcut(QKeySequence("Ctrl+A"));
+    ui->pushButton->setShortcut(QKeySequence("Ctrl+U"));
 }
 
 MainWindow::~MainWindow()
@@ -69,9 +71,10 @@ void MainWindow::actualizar(){
             QCheckBox *checkbox = new QCheckBox;
             checkbox->setStyleSheet(
                 "QCheckBox {"
-                "   font-size: 16px;"   // Tamaño de fuente
+                "   font-size: 20px;"   // Tamaño de fuente
                 "   color: #fff;"     // Color del texto
                 "   font-family: Arial;" // Tipo de letra
+                "   transition: 3s"
                 "}"
                 );
             checkboxes.append(checkbox);
