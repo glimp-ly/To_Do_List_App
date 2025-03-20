@@ -25,8 +25,9 @@ void Dialog::on_buttonBox_accepted()
     try{
         if(ui->tareaIngreso->toPlainText().isEmpty() == false){
             tarea = ui->tareaIngreso->toPlainText().toStdString();
-            if(contiene(tarea, "_")){
-                throw std::runtime_error("El caracter '_' no es valido.");
+            if(contiene(tarea, "_") || contiene(tarea, "\n")){
+                if(contiene(tarea, "_")){ throw std::runtime_error("El caracter '_' no es valido."); }
+                if(contiene(tarea, "\n")){ throw std::runtime_error("El 'Enter' no es valido, puede usar el punto('.') en su lugar."); }
             }
             Task *task = new Task(tarea);
             std::string tar = task->getTarea();

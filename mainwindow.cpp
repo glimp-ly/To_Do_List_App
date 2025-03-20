@@ -81,10 +81,14 @@ void MainWindow::actualizar(){
             QCheckBox *checkbox = new QCheckBox;
             checkbox->setStyleSheet(
                 "QCheckBox {"
-                "   font-size: 20px;"   // Tamaño de fuente
-                "   color: #fff;"     // Color del texto
-                "   font-family: Arial;" // Tipo de letra
-                "   transition: 3s"
+                "   font-size: 20px;"
+                "   color: #fff;"
+                "   font-family: Arial;"
+                "}"
+                "QCheckBox:hover {"
+                "   font-size: 25px;"
+                "   color: #fff;"
+                "   font-family: Arial;"
                 "}"
                 );
             checkboxes.append(checkbox);
