@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
         "   background-color: red;"
         "}"
         );
+    connect(checkboxes, &CheckBoxPerso::buttonEditClicked, this, &MainWindow::editarTarea);
 }
 
 MainWindow::~MainWindow()
@@ -49,16 +50,16 @@ void MainWindow::on_pushButton_2_clicked()
     }
 }
 
-void MainWindow::ocultarCheckbox(QList<QCheckBox *> checkboxes, int condi) {
+void MainWindow::ocultarCheckbox(QList<CheckBoxPerso *> checkboxes, int condi) {
     switch (condi) {
     case 1:
-        for (QCheckBox* cb : checkboxes) {
-            if(cb->text().isEmpty() && !(cb->isChecked()))
+        for (CheckBoxPerso* cb : checkboxes) {
+            if(cb->checkBox->text().isEmpty() && !(cb->checkBox->isChecked()))
                 cb->hide();
         }
         break;
     case 2:
-        for (QCheckBox* cb : checkboxes) {
+        for (CheckBoxPerso* cb : checkboxes) {
             cb->hide();
         }
     default:
@@ -68,7 +69,7 @@ void MainWindow::ocultarCheckbox(QList<QCheckBox *> checkboxes, int condi) {
 
 void MainWindow::actualizar(){
 
-    for (QCheckBox* cb : checkboxes) {
+    for (CheckBoxPerso* cb : checkboxes) {
         ui->verticalLayout_2->removeWidget(cb);
         delete cb;
     }
@@ -78,23 +79,24 @@ void MainWindow::actualizar(){
         Nodo<Task> *aux = listaTareas->getCab();        
 
         for (int i = 0; i <= Task::getCant() - 1; i++) {
-            QCheckBox *checkbox = new QCheckBox;
+            CheckBoxPerso *checkbox = new CheckBoxPerso;
             checkbox->setStyleSheet(
                 "QCheckBox {"
                 "   font-size: 20px;"
                 "   color: #fff;"
                 "   font-family: Arial;"
                 "}"
-                "QCheckBox:hover {"
-                "   font-size: 25px;"
+                "QPushButtom {"
+                "   font-size: 20px;"
                 "   color: #fff;"
                 "   font-family: Arial;"
                 "}"
                 );
-            checkboxes.append(checkbox);
             ui->verticalLayout_2->insertWidget(0, checkbox);
-            checkbox->setText(QString::fromStdString(aux->getInfo()->getTarea()));
+            checkbox->checkBox->setText(QString::fromStdString(aux->getInfo()->getTarea()));
+            checkbox->button->setText("Editar");
             checkbox->show();
+            checkboxes.append(checkbox);
             aux = aux->getSgt();
         }
         ui->cantTask->setText(QString::number(Task::getCant()));
@@ -126,10 +128,10 @@ void MainWindow::recuperarDatos ( ListaSimple<Task> *lT ){
                 std::getline (entrada, estado, lim);
 
                 /* Para convertir distintos tipos de datos a string
-            pro->precioCompra = strtof(precioC.c_str(), NULL);
-            pro->precioVenta = strtof(precioV.c_str(), NULL);
-            pro->stock = atoi(stock.c_str());
-            */
+                pro->precioCompra = strtof(precioC.c_str(), NULL);
+                pro->precioVenta = strtof(precioV.c_str(), NULL);
+                pro->stock = atoi(stock.c_str());
+                */
 
                 if (estado == "1")
                     esPendiente = true;
@@ -146,16 +148,16 @@ void MainWindow::recuperarDatos ( ListaSimple<Task> *lT ){
     }
 }
 
-void MainWindow::actuTask(QList<QCheckBox*> checkboxes){
+void MainWindow::actuTask(QList<CheckBoxPerso*> checkboxes){
     bool eliminado = false;
-    for(QCheckBox *cb : checkboxes){
-        if(!(cb->text().length() == 0)){
-            if(cb->isChecked()){
-                std::string tareaEli = cb->text().toStdString();
+    for(CheckBoxPerso *cb : checkboxes){
+        if(!(cb->checkBox->text().length() == 0)){
+            if(cb->checkBox->isChecked()){
+                std::string tareaEli = cb->checkBox->text().toStdString();
                 eliminado = listaTareas->eliminar(comparar, &tareaEli);
                 eliminarElementoTxt(tareaEli);
-                cb->setText("");
-                cb->setChecked(false);
+                cb->checkBox->setText("");
+                cb->checkBox->setChecked(false);
                 cb->hide();
                 Task::setCant(1);
             }
@@ -208,4 +210,8 @@ void MainWindow::eliminarElementoTxt (const std::string tareaElim){
     }catch(std::runtime_error &e){
         QMessageBox::critical(this, "Error", e.what());
     }
+}
+
+void MainWindow::editarTarea(){
+
 }

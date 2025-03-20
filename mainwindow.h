@@ -7,6 +7,7 @@
 #include "Task.h"
 #include "ui_mainwindow.h"
 #include "QCheckBox"
+#include <CheckboxPerso.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,9 +22,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void ocultarCheckbox(QList<QCheckBox*> checkboxes, int condi);
+    void ocultarCheckbox(QList<CheckBoxPerso*> checkboxes, int condi);
     void actualizar();
-    void actuTask(QList<QCheckBox*> checkboxes);
+    void actuTask(QList<CheckBoxPerso *> checkboxes);
     void recuperarDatos (ListaSimple<Task> *lT);
     void eliminarElementoTxt (const std::string tareaElim);
 
@@ -34,13 +35,16 @@ public:
     bool band = true;
 
 private slots:
+    void editarTarea();
+
     void on_pushButton_2_clicked();
 
     void on_pushButton_clicked();
 
 private:
+    CheckBoxPerso *checkBoxPerso;
     Ui::MainWindow *ui;
     ListaSimple<Task> *listaTareas;
-    QList<QCheckBox*> checkboxes;
+    QList<CheckBoxPerso*> checkboxes;
 };
 #endif // MAINWINDOW_H
