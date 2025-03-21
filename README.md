@@ -6,7 +6,7 @@
 - [x] Agregar tareas  
 - [x] Pessistencia de Datos asi cierres la app
 - [x] Eliminar tareas cuando reinicie la app
-- [ ] Editar tareas (pendiente)  
+- [x] Editar tareas  
 ##
 ## Tecnologías  
 - Qt 6  
