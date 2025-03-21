@@ -27,6 +27,8 @@ public:
     void actuTask(QList<CheckBoxPerso *> checkboxes);
     void recuperarDatos (ListaSimple<Task> *lT);
     void eliminarElementoTxt (const std::string tareaElim);
+    void agregarTarea (std::string &tarea);
+    void guardarDatos (Task *task);
 
     static bool comparar(Task* tarea, void* nombre, void*) {
         return tarea->getTarea() == *(std::string*)nombre;
@@ -35,14 +37,12 @@ public:
     bool band = true;
 
 private slots:
-    void editarTarea();
 
     void on_pushButton_2_clicked();
 
     void on_pushButton_clicked();
 
 private:
-    CheckBoxPerso *checkBoxPerso;
     Ui::MainWindow *ui;
     ListaSimple<Task> *listaTareas;
     QList<CheckBoxPerso*> checkboxes;

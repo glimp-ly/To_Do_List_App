@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
         "   background-color: red;"
         "}"
         );
-    connect(checkboxes, &CheckBoxPerso::buttonEditClicked, this, &MainWindow::editarTarea);
 }
 
 MainWindow::~MainWindow()
@@ -42,9 +41,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    Dialog uiDialog(this);
-    uiDialog.recibirLista(listaTareas);
-    uiDialog.exec();
+    Dialog *uiDialog = new Dialog(this);
+    connect(uiDialog, &Dialog::acceptedWithData, this, &MainWindow::agregarTarea);
+    uiDialog->exec();
     if(!Task::getCant() == 0){
         actualizar();
     }
@@ -212,6 +211,31 @@ void MainWindow::eliminarElementoTxt (const std::string tareaElim){
     }
 }
 
-void MainWindow::editarTarea(){
+void MainWindow::agregarTarea(std::string &tarea){
+    try{
+        Task *task = new Task(tarea);
+        if(listaTareas->existe(comparar, &tarea)){
+            delete task;
+            throw std::runtime_error("Ya existe una tarea con esa descripcion.");
+        }
+        listaTareas->insertarElemento(task);
+        guardarDatos(task);
+    }
+    catch(const std::runtime_error &e){
+        QMessageBox::critical(this, "Error", e.what());
+    }
+}
 
+void MainWindow::guardarDatos (Task *task){
+    std::ofstream archivo;
+    try{
+        archivo.open( nombreArchivo.c_str(), std::ios_base::app | std::ios_base::out );
+        if (!archivo.is_open()) {
+            throw std::runtime_error("No se pudo abrir el archivo");
+        }
+        archivo << task->getTarea() << lim << task->getEsPendiente() << std::endl;
+        archivo.close();
+    }catch(const std::runtime_error& e){
+        QMessageBox::critical(this, "Error", e.what());
+    }
 }
