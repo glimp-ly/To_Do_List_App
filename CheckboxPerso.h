@@ -4,7 +4,7 @@
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QPushButton>
-#include <QSpacerItem>
+#include <dialog.h>
 
 class CheckBoxPerso : public QWidget {
     Q_OBJECT
@@ -21,23 +21,23 @@ public:
         layout->addStretch();
         layout->addWidget(button);
 
-        // Conectar señales
         connect(checkBox, &QCheckBox::stateChanged, this, &CheckBoxPerso::onCheckboxChanged);
         connect(button, &QPushButton::clicked, this, &CheckBoxPerso::onButtonClicked);
     }
 
+    void editarTarea(std::string &tareaActual);
+
 signals:
     void checkboxToggled(bool checked);
     void buttonEditClicked();
+    void editWithData(std::string &tareaAntigua, std::string &tareaActual);
 
 private slots:
     void onCheckboxChanged(int state) {
         emit checkboxToggled(state == Qt::Checked);
     }
 
-    void onButtonClicked() {
-        emit buttonEditClicked();
-    }
+    void onButtonClicked();
 
 private:
 };
