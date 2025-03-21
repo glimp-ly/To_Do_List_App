@@ -29,14 +29,7 @@ void Dialog::on_buttonBox_accepted()
                 if(contiene(tarea, "_")){ throw std::runtime_error("El caracter '_' no es valido."); }
                 if(contiene(tarea, "\n")){ throw std::runtime_error("El 'Enter' no es valido, puede usar el punto('.') en su lugar."); }
             }
-            Task *task = new Task(tarea);
-            std::string tar = task->getTarea();
-            if(listaTarea->existe(comparar, &tar)){
-                delete task;
-                throw std::runtime_error("Ya existe una tarea con esa descripcion.");
-            }
-            listaTarea->insertarElemento(task);
-            guardarDatos(task);
+            emit acceptedWithData(tarea);
         }
         else{
             close();
@@ -51,25 +44,7 @@ void Dialog::on_buttonBox_rejected()
     close();
 }
 
-void Dialog::guardarDatos (Task *task){
-    std::ofstream archivo;
-    try{
-        archivo.open( nombreArchivo.c_str(), std::ios_base::app | std::ios_base::out );
-        if (!archivo.is_open()) {
-            throw std::runtime_error("No se pudo abrir el archivo");
-        }
-        archivo << task->getTarea() << lim << task->getEsPendiente() << std::endl;
-        archivo.close();
-
-    }catch(const std::runtime_error& e){
-        QMessageBox::critical(this, "Error", e.what());
-    }
-}
-
 bool Dialog::contiene(std::string cadena, std::string subCadena) {
     return cadena.find(subCadena) != std::string::npos;
 }
 
-void Dialog::recibirLista(ListaSimple<Task> *listaTarea){
-    this->listaTarea = listaTarea;
-}

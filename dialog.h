@@ -2,8 +2,6 @@
 #define DIALOG_H
 
 #include <QDialog>
-#include "listaSimpleBase.h"
-#include "Task.h"
 
 namespace Ui {
 class Dialog;
@@ -18,22 +16,18 @@ public:
     std::string tarea;
     ~Dialog();
 
-    void guardarDatos(Task *task);
     bool contiene (std::string cadena, std::string subCadena);
-    void recibirLista(ListaSimple<Task> *listaTarea);
-
-    static bool comparar(Task* tarea, void* nombre, void*) {
-        return tarea->getTarea() == *(std::string*)nombre;
-    }
 
 private slots:
     void on_buttonBox_accepted();
 
     void on_buttonBox_rejected();
 
+signals:
+    void acceptedWithData(std::string &tarea);
+
 private:
     Ui::Dialog *ui;
-    ListaSimple<Task> *listaTarea;
 };
 
 #endif // DIALOG_H
