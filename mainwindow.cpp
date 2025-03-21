@@ -43,6 +43,7 @@ void MainWindow::on_pushButton_2_clicked()
 {
     Dialog *uiDialog = new Dialog(this);
     connect(uiDialog, &Dialog::acceptedWithData, this, &MainWindow::agregarTarea);
+    connect(uiDialog, &Dialog::finished, uiDialog, &QObject::deleteLater);
     uiDialog->exec();
     if(!Task::getCant() == 0){
         actualizar();
@@ -70,6 +71,7 @@ void MainWindow::actualizar(){
 
     for (CheckBoxPerso* cb : checkboxes) {
         ui->verticalLayout_2->removeWidget(cb);
+        disconnect(cb, &CheckBoxPerso::editWithData, this, &MainWindow::editarTarea);
         delete cb;
     }
     checkboxes.clear();
@@ -95,6 +97,7 @@ void MainWindow::actualizar(){
             checkbox->checkBox->setText(QString::fromStdString(aux->getInfo()->getTarea()));
             checkbox->button->setText("Editar");
             checkbox->show();
+            connect(checkbox, &CheckBoxPerso::editWithData, this, &MainWindow::editarTarea);
             checkboxes.append(checkbox);
             aux = aux->getSgt();
         }
@@ -236,6 +239,25 @@ void MainWindow::guardarDatos (Task *task){
         archivo << task->getTarea() << lim << task->getEsPendiente() << std::endl;
         archivo.close();
     }catch(const std::runtime_error& e){
+        QMessageBox::critical(this, "Error", e.what());
+    }
+}
+
+void MainWindow::editarTarea(std::string &tareaAntigua, std::string &tareaActual){
+    try{
+        Nodo<Task> *nodoTask = listaTareas->nodoBuscado(comparar, &tareaAntigua);
+        if (!nodoTask) {
+            QMessageBox::critical(this, "Error", "Tarea no encontrada.");
+            return;
+        }
+        if(listaTareas->existe(comparar, &tareaActual)){
+            throw std::runtime_error("Ya existe una tarea con esa descripcion.");
+        }
+        nodoTask->getInfo()->setTarea(tareaActual);
+        //guardarCambiosEnArchivo(tareaAntigua, tareaActual);  Actualizar archivo
+        actualizar();
+    }
+    catch(const std::runtime_error &e){
         QMessageBox::critical(this, "Error", e.what());
     }
 }

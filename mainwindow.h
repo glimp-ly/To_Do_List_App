@@ -29,6 +29,7 @@ public:
     void eliminarElementoTxt (const std::string tareaElim);
     void agregarTarea (std::string &tarea);
     void guardarDatos (Task *task);
+    void editarTarea (std::string &tareaAntigua, std::string &tareaActual);
 
     static bool comparar(Task* tarea, void* nombre, void*) {
         return tarea->getTarea() == *(std::string*)nombre;
