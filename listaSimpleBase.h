@@ -127,6 +127,24 @@ public:
         return false;
     }
 
+    Nodo<T> *nodoBuscado (bool (*comparador)(T* elemento, void* param1, void* param2),
+                void* param1 = nullptr,
+                void* param2 = nullptr) {
+        if (!cab) return nullptr;
+
+        Nodo<T> *actual = cab;
+
+        while (actual) {
+            if (comparador(actual->getInfo(), param1, param2)) {
+                return actual;
+            }
+
+            actual = actual->getSgt();
+        }
+
+        return nullptr;
+    }
+
     template <typename A>
     bool buscar (A condicion);
 
