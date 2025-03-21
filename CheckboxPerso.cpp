@@ -9,6 +9,5 @@ void CheckBoxPerso::onButtonClicked(){
 
 void CheckBoxPerso::editarTarea(std::string &tareaActual){
     std::string tareaAntigua = checkBox->text().toStdString();
-    checkBox->setText(QString::fromStdString(tareaActual));
     emit editWithData(tareaAntigua, tareaActual);
 }
